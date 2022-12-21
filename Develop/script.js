@@ -43,6 +43,18 @@ function generatePassword() {
     if (passwordSpecial) {
       possibleCharacters = possibleCharacters.concat(specialCharacters);
     }
+
+    console.log(possibleCharacters)
+    
+    // Loop through password length
+    for (var i = 0; i < passwordLength; i++) {
+      // Generate random index based on length of possible characters
+      var randomIndex = Math.floor(Math.random() * possibleCharacters.length);
+      console.log(randomIndex)
+      console.log(possibleCharacters[randomIndex])
+      // Add character at random index to password characters
+      passwordCharacters.push(possibleCharacters[randomIndex]);
+    }
 }
 
 // Write password to the #password input
