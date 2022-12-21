@@ -44,17 +44,28 @@ function generatePassword() {
       possibleCharacters = possibleCharacters.concat(specialCharacters);
     }
 
-    console.log(possibleCharacters)
-    
     // Loop through password length
     for (var i = 0; i < passwordLength; i++) {
       // Generate random index based on length of possible characters
+      // Use math.floor to round down to nearest whole number
       var randomIndex = Math.floor(Math.random() * possibleCharacters.length);
-      console.log(randomIndex)
-      console.log(possibleCharacters[randomIndex])
       // Add character at random index to password characters
       passwordCharacters.push(possibleCharacters[randomIndex]);
     }
+    
+    // set manual passowrd for testing below logic
+    passwordCharacters = "sqEmq0zh".split("")
+
+    if (passwordSpecial && !passwordCharacters.includes(specialCharacters)) {
+      var randomSpecialIndex = Math.floor(Math.random() * specialCharacters.length);
+      var addSpecial = specialCharacters[randomSpecialIndex];
+      var randomPassowrdIndex = Math.floor(Math.random() * passwordCharacters.length);
+      passwordCharacters.splice(randomPassowrdIndex, 1, addSpecial);
+    }
+
+    // convert passwordCharacters to string and return final password
+    var password = passwordCharacters.join("");
+    return password;
 }
 
 // Write password to the #password input
