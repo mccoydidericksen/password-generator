@@ -28,6 +28,21 @@ function generatePassword() {
     // Create array to hold password characters
     var passwordCharacters = [];
     // If user selected lowercase letters, add lowercase letters to possible characters
+    if (passwordLowercase) {
+      possibleCharacters = possibleCharacters.concat(lowercaseLetters);
+    }
+    // If user selected uppercase letters, add uppercase letters to possible characters
+    if (passwordUppercase) {
+      possibleCharacters = possibleCharacters.concat(uppercaseLetters);
+    }
+    // If user selected numbers, add numbers to possible characters
+    if (passwordNumeric) {
+      possibleCharacters = possibleCharacters.concat(numbers);
+    }
+    // If user selected special characters, add special characters to possible characters
+    if (passwordSpecial) {
+      possibleCharacters = possibleCharacters.concat(specialCharacters);
+    }
 }
 
 // Write password to the #password input
