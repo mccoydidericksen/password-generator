@@ -16,6 +16,7 @@ function generatePassword() {
     var passwordSpecial = confirm("Would you like to include special characters?");
 
     // Create array of lowercase letters
+    // Using split method to convert string to array
     var lowercaseLetters = "abcdefghijklmnopqrstuvwxyz".split("");
     // Create array of uppercase letters
     var uppercaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
@@ -44,6 +45,12 @@ function generatePassword() {
       possibleCharacters = possibleCharacters.concat(specialCharacters);
     }
 
+    // Declare variables for tracking character counts
+    var specialCount = 0;
+    var numberCount = 0;
+    var upperCount = 0;
+    var lowerCount = 0;
+
     // Loop through password length
     for (var i = 0; i < passwordLength; i++) {
       // Generate random index based on length of possible characters
@@ -51,11 +58,24 @@ function generatePassword() {
       var randomIndex = Math.floor(Math.random() * possibleCharacters.length);
       // Add character at random index to password characters
       passwordCharacters.push(possibleCharacters[randomIndex]);
+      // Check if character is lowercase, uppercase, number, or special character and add to count variable
+      if (lowercaseLetters.includes(possibleCharacters[randomIndex])) {
+        lowerCount++;
+      }
+      else if (uppercaseLetters.includes(possibleCharacters[randomIndex])) {
+        upperCount++;
+      }
+      else if (numbers.includes(possibleCharacters[randomIndex])) {
+        numberCount++;
+      }
+      else if (specialCharacters.includes(possibleCharacters[randomIndex])) {
+        specialCount++;
+      }
     }
     
     // set manual passowrd for testing below logic
     passwordCharacters = "sqEmq0zh".split("")
-
+    // check if user selected special characters and if password contains special characters - add if not
     if (passwordSpecial && !passwordCharacters.includes(specialCharacters)) {
       var randomSpecialIndex = Math.floor(Math.random() * specialCharacters.length);
       var addSpecial = specialCharacters[randomSpecialIndex];
