@@ -47,32 +47,42 @@ function generatePassword() {
 
     // Declare variables for tracking character counts
     var specialCount = 0;
+    var specialIndexList= [];
     var numberCount = 0;
+    var numberIndexList = [];
     var upperCount = 0;
+    var upperIndexList = [];
     var lowerCount = 0;
-
+    var lowerIndexList = [];
+    // Declare variable for random index
+    var randomIndex = 0
     // Loop through password length
     for (var i = 0; i < passwordLength; i++) {
       // Generate random index based on length of possible characters
       // Use math.floor to round down to nearest whole number
-      var randomIndex = Math.floor(Math.random() * possibleCharacters.length);
+      randomIndex = Math.floor(Math.random() * possibleCharacters.length);
       // Add character at random index to password characters
       passwordCharacters.push(possibleCharacters[randomIndex]);
-      // Check if character is lowercase, uppercase, number, or special character and add to count variable
+      // Check if character is lowercase, uppercase, number, or special character
+      // add to count variable and add index to index list
       if (lowercaseLetters.includes(possibleCharacters[randomIndex])) {
         lowerCount++;
+        lowerIndexList.push(i);
       }
       else if (uppercaseLetters.includes(possibleCharacters[randomIndex])) {
         upperCount++;
+        upperIndexList.push(i);
       }
       else if (numbers.includes(possibleCharacters[randomIndex])) {
         numberCount++;
+        numberIndexList.push(i);
       }
       else if (specialCharacters.includes(possibleCharacters[randomIndex])) {
         specialCount++;
+        specialIndexList.push(i);
       }
     }
-    
+
     // set manual passowrd for testing below logic
     passwordCharacters = "sqEmq0zh".split("")
     // check if user selected special characters and if password contains special characters - add if not
