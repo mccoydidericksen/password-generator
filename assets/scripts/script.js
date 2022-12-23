@@ -10,10 +10,10 @@ function generatePassword() {
       return generatePassword();
     }
     // Prompt user for character types
-    var passwordLowercase = confirm("Would you like to include lowercase letters?");
-    var passwordUppercase = confirm("Would you like to include uppercase letters?");
-    var passwordNumeric = confirm("Would you like to include numbers?");
-    var passwordSpecial = confirm("Would you like to include special characters?");
+    var includeLowercase = confirm("Would you like to include lowercase letters?");
+    var includeUppercase = confirm("Would you like to include uppercase letters?");
+    var includeNumbers = confirm("Would you like to include numbers?");
+    var includeSpecial = confirm("Would you like to include special characters?");
 
     // Create array of lowercase letters
     // Using split method to convert string to array
@@ -29,30 +29,26 @@ function generatePassword() {
     // Create array to hold password characters
     var passwordCharacters = [];
     // If user selected lowercase letters, add lowercase letters to possible characters
-    if (passwordLowercase) {
+    if (includeLowercase) {
       possibleCharacters = possibleCharacters.concat(lowercaseLetters);
     }
     // If user selected uppercase letters, add uppercase letters to possible characters
-    if (passwordUppercase) {
+    if (includeUppercase) {
       possibleCharacters = possibleCharacters.concat(uppercaseLetters);
     }
     // If user selected numbers, add numbers to possible characters
-    if (passwordNumeric) {
+    if (includeNumbers) {
       possibleCharacters = possibleCharacters.concat(numbers);
     }
     // If user selected special characters, add special characters to possible characters
-    if (passwordSpecial) {
+    if (includeSpecial) {
       possibleCharacters = possibleCharacters.concat(specialCharacters);
     }
 
-    // Declare variables for tracking character counts
-    var specialCount = 0;
+    // Declare variables for tracking character indexes
     var specialIndexList= [];
-    var numberCount = 0;
     var numberIndexList = [];
-    var upperCount = 0;
     var upperIndexList = [];
-    var lowerCount = 0;
     var lowerIndexList = [];
     // Declare variable for random index
     var randomIndex = 0
@@ -66,33 +62,136 @@ function generatePassword() {
       // Check if character is lowercase, uppercase, number, or special character
       // add to count variable and add index to index list
       if (lowercaseLetters.includes(possibleCharacters[randomIndex])) {
-        lowerCount++;
         lowerIndexList.push(i);
       }
       else if (uppercaseLetters.includes(possibleCharacters[randomIndex])) {
-        upperCount++;
         upperIndexList.push(i);
       }
       else if (numbers.includes(possibleCharacters[randomIndex])) {
-        numberCount++;
         numberIndexList.push(i);
       }
       else if (specialCharacters.includes(possibleCharacters[randomIndex])) {
-        specialCount++;
         specialIndexList.push(i);
       }
+
+    } 
+
+    // create object to store character list information
+    var charLists = {
+      lower: {
+        indexList: lowerIndexList,
+        indexCount: lowerIndexList.length
+      },
+      upper: {
+        indexList: upperIndexList,
+        indexCount: upperIndexList.length
+      },
+      number: {
+        indexList: numberIndexList,
+        indexCount: numberIndexList.length
+      }, 
+      special: {
+        indexList: specialIndexList,
+        indexCount: specialIndexList.length
+      },
     }
 
-    // set manual passowrd for testing below logic
-    passwordCharacters = "sqEmq0zh".split("")
     // check if user selected special characters and if password contains special characters - add if not
-    if (passwordSpecial && !passwordCharacters.includes(specialCharacters)) {
+    if (includeSpecial && passwordCharacters.every(r=> !specialCharacters.includes(r))) {
+      console.log("adding special")
       var randomSpecialIndex = Math.floor(Math.random() * specialCharacters.length);
       var addSpecial = specialCharacters[randomSpecialIndex];
-      var randomPassowrdIndex = Math.floor(Math.random() * passwordCharacters.length);
-      passwordCharacters.splice(randomPassowrdIndex, 1, addSpecial);
+      // choose an indexList that has more than two list items
+      for (i=0; i<Object.keys(charLists).length; i++) {
+        if (charLists[Object.keys(charLists)[i]].indexCount > 1) {
+          var selectedList = Object.keys(charLists)[i];
+          // stops the for loop if a list is found
+          break;
+        }
+      }
+      // replace the chosen additional character to add with a valid character selection from the password
+      var chosenIndex = charLists[selectedList].indexList[charLists[selectedList].indexList.length - 1];
+      console.log(selectedList)
+      console.log(chosenIndex)
+      console.log(charLists[selectedList])
+      passwordCharacters.splice(chosenIndex, 1, addSpecial);
+      // update the selectedList values since we modified the password characters
+      charLists[selectedList].indexCount -= 1;
+      charLists[selectedList].indexList.pop();
     }
 
+    // check if user selected numbers characters and if password contains numbers characters - add if not
+    if (includeNumbers && passwordCharacters.every(r=> !numbers.includes(r))) {
+      console.log("adding number")
+      var randomNumberIndex = Math.floor(Math.random() * numbers.length);
+      var addNumber = numbers[randomNumberIndex];
+      // choose an indexList that has more than two list items
+      for (i=0; i<Object.keys(charLists).length; i++) {
+        if (charLists[Object.keys(charLists)[i]].indexCount > 1) {
+          var selectedList = Object.keys(charLists)[i];
+          // stops the for loop if a list is found
+          break;
+        }
+      }
+      // replace the chosen additional character to add with a valid character selection from the password
+      var chosenIndex = charLists[selectedList].indexList[charLists[selectedList].indexList.length - 1];
+      console.log(selectedList)
+      console.log(chosenIndex)
+      console.log(charLists[selectedList])
+      passwordCharacters.splice(chosenIndex, 1, addNumber);
+      // update the selectedList values since we modified the password characters
+      charLists[selectedList].indexCount -= 1;
+      charLists[selectedList].indexList.pop();
+    }
+
+    // check if user selected uppercase characters and if password contains uppercase characters - add if not
+    if (includeUppercase && passwordCharacters.every(r=> !uppercaseLetters.includes(r))) {
+      console.log("adding upper")
+      var randomUpperIndex = Math.floor(Math.random() * uppercaseLetters.length);
+      var addUpper = uppercaseLetters[randomUpperIndex];
+      // choose an indexList that has more than two list items
+      for (i=0; i<Object.keys(charLists).length; i++) {
+        if (charLists[Object.keys(charLists)[i]].indexCount > 1) {
+          var selectedList = Object.keys(charLists)[i];
+          // stops the for loop if a list is found
+          break;
+        }
+      }
+      // replace the chosen additional character to add with a valid character selection from the password
+      var chosenIndex = charLists[selectedList].indexList[charLists[selectedList].indexList.length - 1];
+      console.log(selectedList)
+      console.log(chosenIndex)
+      console.log(charLists[selectedList])
+      passwordCharacters.splice(chosenIndex, 1, addUpper);
+      // update the selectedList values since we modified the password characters
+      charLists[selectedList].indexCount -= 1;
+      charLists[selectedList].indexList.pop();
+    }
+
+    // check if user selected lower characters and if password contains lower characters - add if not
+    if (includeLowercase && passwordCharacters.every(r=> !lowercaseLetters.includes(r))) {
+      console.log("adding lower")
+      var randomLowerIndex = Math.floor(Math.random() * lowercaseLetters.length);
+      var addLower = lowercaseLetters[randomLowerIndex];
+      // choose an indexList that has more than two list items
+      for (i=0; i<Object.keys(charLists).length; i++) {
+        if (charLists[Object.keys(charLists)[i]].indexCount > 1) {
+          var selectedList = Object.keys(charLists)[i];
+          // stops the for loop if a list is found
+          break;
+        }
+      }
+      // replace the chosen additional character to add with a valid character selection from the password
+      var chosenIndex = charLists[selectedList].indexList[charLists[selectedList].indexList.length - 1];
+      console.log(selectedList)
+      console.log(chosenIndex)
+      console.log(charLists[selectedList])
+      passwordCharacters.splice(chosenIndex, 1, addLower);
+      // update the selectedList values since we modified the password characters
+      charLists[selectedList].indexCount -= 1;
+      charLists[selectedList].indexList.pop();
+    }
+      
     // convert passwordCharacters to string and return final password
     var password = passwordCharacters.join("");
     return password;
